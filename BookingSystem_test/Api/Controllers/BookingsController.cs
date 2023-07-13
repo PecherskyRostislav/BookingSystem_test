@@ -3,7 +3,6 @@ using API.DataStore.Models;
 using API.DataStore.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace API.Api.Controllers;
 
@@ -26,7 +25,13 @@ public class BookingsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult> Get(Guid id)
     {
-        return Ok(await _mediator.Send(new GeBookingByIdQuery(id)));
+        var item = await _mediator.Send(new GeBookingByIdQuery(id));
+        if (item == null) 
+        {
+            return NotFound(id);
+        }
+
+        return Ok(item);
     }
 
     [HttpPost]
@@ -38,12 +43,24 @@ public class BookingsController : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult> Put(Guid id, [FromBody] Booking body)
     {
-        return Ok(await _mediator.Send(new PutBookingCommand(id, body)));
+        var item = await _mediator.Send(new PutBookingCommand(id, body));
+        if (item == null)
+        {
+            return NotFound(id);
+        }
+
+        return Ok(item);
     }
 
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(Guid id)
     {
-        return Ok(await _mediator.Send(new DeleteBookingCommand(id)));
+        var item = await _mediator.Send(new DeleteBookingCommand(id));
+        if (item == null)
+        {
+            return NotFound(id);
+        }
+
+        return Ok(item);
     }
 }

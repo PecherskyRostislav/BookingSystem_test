@@ -2,4 +2,4 @@
 
 namespace API.DataStore.Commands;
 
-public record DeleteLocationCommand(Guid id) : IRequest<bool>;
+public record DeleteLocationCommand(Guid id) : IRequest<bool?>;

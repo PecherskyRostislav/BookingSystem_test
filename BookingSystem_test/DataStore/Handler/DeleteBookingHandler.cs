@@ -3,7 +3,7 @@ using MediatR;
 
 namespace API.DataStore.Handler;
 
-public class DeleteBookingHandler : IRequestHandler<DeleteBookingCommand, bool>
+public class DeleteBookingHandler : IRequestHandler<DeleteBookingCommand, bool?>
 {
     private readonly ContextDb _contextDb;
     public DeleteBookingHandler(ContextDb contextDb)
@@ -11,10 +11,10 @@ public class DeleteBookingHandler : IRequestHandler<DeleteBookingCommand, bool>
         _contextDb = contextDb;
     }
 
-    public async Task<bool> Handle(DeleteBookingCommand request, CancellationToken cancellationToken)
+    public async Task<bool?> Handle(DeleteBookingCommand request, CancellationToken cancellationToken)
     {
         var booking = await _contextDb.Bookings.FindAsync(request.id, cancellationToken);
-        if (booking == null) return false;
+        if (booking == null) return null;
 
         var result = _contextDb.Bookings.Remove(booking);
 

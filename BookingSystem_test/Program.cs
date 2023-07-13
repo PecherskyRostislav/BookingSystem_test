@@ -1,4 +1,6 @@
+using API.Behaviors;
 using API.DataStore;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,7 @@ builder.Services.AddDbContext<ContextDb>(options =>
        serverVersion: ServerVersion.AutoDetect(connection));
 });
 
+builder.Services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(LoggingBehaivor<,>));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

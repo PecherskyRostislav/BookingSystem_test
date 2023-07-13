@@ -4,7 +4,7 @@ using MediatR;
 namespace API.DataStore.Handler;
 
 
-public class DeleteLocationHandler : IRequestHandler<DeleteLocationCommand, bool>
+public class DeleteLocationHandler : IRequestHandler<DeleteLocationCommand, bool?>
 {
     private readonly ContextDb _contextDb;
     public DeleteLocationHandler(ContextDb contextDb)
@@ -12,10 +12,10 @@ public class DeleteLocationHandler : IRequestHandler<DeleteLocationCommand, bool
         _contextDb = contextDb;
     }
 
-    public async Task<bool> Handle(DeleteLocationCommand request, CancellationToken cancellationToken)
+    public async Task<bool?> Handle(DeleteLocationCommand request, CancellationToken cancellationToken)
     {
         var Location = await _contextDb.Locations.FindAsync(request.id, cancellationToken);
-        if (Location == null) return false;
+        if (Location == null) return null;
 
         var result = _contextDb.Locations.Remove(Location);
 
