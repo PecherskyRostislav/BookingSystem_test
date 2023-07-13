@@ -27,7 +27,7 @@ public class LocationsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult> Get(Guid id)
     {
-        return Ok(await _mediator.Send(new GetLocationsQuery()));
+        return Ok(await _mediator.Send(new GetLocationByIdQuery(id)));
     }
 
     [HttpPost]
@@ -41,7 +41,7 @@ public class LocationsController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> Put(Guid id)
+    public async Task<ActionResult> Put(Guid id, [FromBody] string body)
     {
         return Ok(await _mediator.Send(new GetLocationsQuery()));
     }
