@@ -9,10 +9,10 @@ namespace API.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class BookingController : ControllerBase
+public class BookingsController : ControllerBase
 {
     private readonly IMediator _mediator;
-    public BookingController(IMediator mediator)
+    public BookingsController(IMediator mediator)
     {
             _mediator = mediator;
     }
@@ -41,12 +41,15 @@ public class BookingController : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult> Put(Guid id, [FromBody] string body)
     {
-        return Ok(await _mediator.Send(new GetBookingsQuery()));
+        Booking Booking = new();
+        JsonConvert.PopulateObject(body, Booking);
+
+        return Ok(await _mediator.Send(new PutBookingCommand(id, Booking)));
     }
 
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(Guid id)
     {
-        return Ok(await _mediator.Send(new GetBookingsQuery()));
+        return Ok(await _mediator.Send(new DeleteBookingCommand(id)));
     }
 }

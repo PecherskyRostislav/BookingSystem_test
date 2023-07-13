@@ -42,12 +42,15 @@ public class LocationsController : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult> Put(Guid id, [FromBody] string body)
     {
-        return Ok(await _mediator.Send(new GetLocationsQuery()));
+        Location location = new();
+        JsonConvert.PopulateObject(body, location);
+
+        return Ok(await _mediator.Send(new PutLocationCommand(id, location)));
     }
 
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(Guid id)
     {
-        return Ok(await _mediator.Send(new GetLocationsQuery()));
+        return Ok(await _mediator.Send(new DeleteLocationCommand(id)));
     }
 }
