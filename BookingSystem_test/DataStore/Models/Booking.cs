@@ -1,19 +1,9 @@
-﻿
-using Domain.Base;
-
-namespace Domain.Entities.Location;
+﻿namespace API.DataStore.Models;
 
 public  class Booking : BaseEntity
 {
-    public Booking(long bookingId, long locationId, DateTime date, TimeSpan time, string goods, string carrier, string state)
+    public Booking()
     {
-        Id = bookingId;
-        LocationId = locationId;
-        Date = date;
-        Time = time;
-        Goods = goods;
-        Carrier = carrier;
-        State = state;
     }
 
     public DateTime Date { get; private set; }
