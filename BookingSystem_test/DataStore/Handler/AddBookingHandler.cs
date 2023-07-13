@@ -16,7 +16,7 @@ public class AddBookingHandler : IRequestHandler<AddBookingCommand, Booking>
     public async Task<Booking> Handle(AddBookingCommand request, CancellationToken cancellationToken) 
     {
         await _contextDb.Bookings.AddAsync(request.Booking, cancellationToken);
-
+        await _contextDb.SaveChangesAsync();
         return request.Booking;
     }
 }

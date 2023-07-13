@@ -12,5 +12,5 @@ public class GeBookingByIdHandler : IRequestHandler<GeBookingByIdQuery, Booking>
     }
 
     public async Task<Booking> Handle(GeBookingByIdQuery request, CancellationToken cancellationToken) => 
-        await _contextDb.Bookings.FindAsync(request.id, cancellationToken);
+        await _contextDb.Bookings.FindAsync(request.id);
 }

@@ -16,9 +16,13 @@ public class PutLocationHandler : IRequestHandler<PutLocationCommand, Location>
         var Location = await _contextDb.Locations.FindAsync(request.id, cancellationToken);
         if (Location == null) return null;
 
-        request.Location.Id = Location.Id;
-        _contextDb.Locations.Update(request.Location);
+        Location.Name = request.Location.Name;
+        Location.Address = request.Location.Address;
+        Location.Capacity = request.Location.Capacity;
 
-        return request.Location;
+        _contextDb.Locations.Update(Location);
+        await _contextDb.SaveChangesAsync();
+
+        return Location;
     }
 }

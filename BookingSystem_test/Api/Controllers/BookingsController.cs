@@ -30,21 +30,15 @@ public class BookingsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> Post([FromBody] string body)
+    public async Task<ActionResult> Post([FromBody] Booking body)
     {
-        Booking Booking = new();
-        JsonConvert.PopulateObject(body, Booking);
-
-        return Ok(await _mediator.Send(new AddBookingCommand(Booking)));
+        return Ok(await _mediator.Send(new AddBookingCommand(body)));
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> Put(Guid id, [FromBody] string body)
+    public async Task<ActionResult> Put(Guid id, [FromBody] Booking body)
     {
-        Booking Booking = new();
-        JsonConvert.PopulateObject(body, Booking);
-
-        return Ok(await _mediator.Send(new PutBookingCommand(id, Booking)));
+        return Ok(await _mediator.Send(new PutBookingCommand(id, body)));
     }
 
     [HttpDelete("{id}")]

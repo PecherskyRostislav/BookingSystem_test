@@ -1,11 +1,9 @@
 using API.DataStore;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly));
-
 
 var connection = builder.Configuration.GetConnectionString("default");
 builder.Services.AddDbContext<ContextDb>(options =>

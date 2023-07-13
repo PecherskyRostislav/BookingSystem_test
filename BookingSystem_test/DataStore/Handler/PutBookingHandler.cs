@@ -16,9 +16,17 @@ public class PutBookingHandler : IRequestHandler<PutBookingCommand, Booking>
         var booking = await _contextDb.Bookings.FindAsync(request.id, cancellationToken);
         if (booking == null) return null;
 
-        request.Booking.Id = booking.Id;
-        _contextDb.Bookings.Update(request.Booking);
+        booking.LocationId = request.Booking.LocationId;
+        booking.Date = request.Booking.Date;
+        booking.Time = request.Booking.Time;
+        booking.State = request.Booking.State;
+        booking.Goods = request.Booking.Goods;
+        booking.Carrier = request.Booking.Carrier;
 
-        return request.Booking;
+
+        _contextDb.Bookings.Update(booking);
+        await _contextDb.SaveChangesAsync();
+
+        return booking;
     }
 }

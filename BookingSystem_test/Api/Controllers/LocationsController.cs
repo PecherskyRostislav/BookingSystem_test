@@ -31,21 +31,15 @@ public class LocationsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> Post([FromBody]string body)
+    public async Task<ActionResult> Post([FromBody] Location body)
     {
-        Location location = new();
-        JsonConvert.PopulateObject(body, location);
-
-        return Ok(await _mediator.Send(new AddLocationCommand(location)));
+        return Ok(await _mediator.Send(new AddLocationCommand(body)));
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> Put(Guid id, [FromBody] string body)
+    public async Task<ActionResult> Put(Guid id, [FromBody] Location body)
     {
-        Location location = new();
-        JsonConvert.PopulateObject(body, location);
-
-        return Ok(await _mediator.Send(new PutLocationCommand(id, location)));
+        return Ok(await _mediator.Send(new PutLocationCommand(id, body)));
     }
 
     [HttpDelete("{id}")]

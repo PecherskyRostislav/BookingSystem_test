@@ -18,6 +18,7 @@ public class DeleteBookingHandler : IRequestHandler<DeleteBookingCommand, bool>
 
         var result = _contextDb.Bookings.Remove(booking);
 
-        return result.State == Microsoft.EntityFrameworkCore.EntityState.Deleted;
+        await _contextDb.SaveChangesAsync();
+        return result.State == Microsoft.EntityFrameworkCore.EntityState.Detached;
     }
 }

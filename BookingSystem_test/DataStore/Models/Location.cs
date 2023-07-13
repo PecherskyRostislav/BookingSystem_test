@@ -7,7 +7,7 @@ public class Location : BaseEntity
         
     }
 
-    public string Name { get; private set; }
-    public string Address { get; private set; }
-    public int Capacity { get; private set; }
+    public string Name { get; set; }
+    public string Address { get; set; }
+    public int Capacity { get; set; }
 }

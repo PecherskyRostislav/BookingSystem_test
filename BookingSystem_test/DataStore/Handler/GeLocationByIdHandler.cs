@@ -12,6 +12,5 @@ public class GeLocationByIdHandler : IRequestHandler<GetLocationByIdQuery, Locat
         _contextDb = contextDb;
     }
 
-    public async Task<Location> Handle(GetLocationByIdQuery request, CancellationToken cancellationToken) => 
-        await _contextDb.Locations.FindAsync(request.id, cancellationToken);
+    public async Task<Location> Handle(GetLocationByIdQuery request, CancellationToken cancellationToken) => await _contextDb.Locations.FindAsync(request.Id);
 }

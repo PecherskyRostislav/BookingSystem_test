@@ -3,4 +3,4 @@ using MediatR;
 
 namespace API.DataStore.Queries;
 
-public record GetLocationByIdQuery(Guid id) : IRequest<Location>;
+public record GetLocationByIdQuery(Guid Id) : IRequest<Location>;

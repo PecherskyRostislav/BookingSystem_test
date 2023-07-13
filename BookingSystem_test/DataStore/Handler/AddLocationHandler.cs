@@ -16,6 +16,7 @@ public class AddLocationHandler : IRequestHandler<AddLocationCommand, Location>
     public async Task<Location> Handle(AddLocationCommand request, CancellationToken cancellationToken)
     {
         await _contextDb.Locations.AddAsync(request.Location, cancellationToken);
+        await _contextDb.SaveChangesAsync();
         return request.Location;
     }
 }

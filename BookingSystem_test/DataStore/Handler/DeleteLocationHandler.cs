@@ -19,6 +19,7 @@ public class DeleteLocationHandler : IRequestHandler<DeleteLocationCommand, bool
 
         var result = _contextDb.Locations.Remove(Location);
 
-        return result.State == Microsoft.EntityFrameworkCore.EntityState.Deleted;
+        await _contextDb.SaveChangesAsync();
+        return result.State == Microsoft.EntityFrameworkCore.EntityState.Detached;
     }
 }
