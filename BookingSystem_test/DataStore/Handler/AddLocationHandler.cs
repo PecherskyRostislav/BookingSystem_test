@@ -1,9 +1,10 @@
 ﻿using API.DataStore.Commands;
+using API.DataStore.Models;
 using MediatR;
 
 namespace API.DataStore.Handler;
 
-public class AddLocationHandler : IRequestHandler<AddLocationCommand>
+public class AddLocationHandler : IRequestHandler<AddLocationCommand, Location>
 {
     private readonly ContextDb _contextDb;
 
@@ -12,9 +13,9 @@ public class AddLocationHandler : IRequestHandler<AddLocationCommand>
         _contextDb = context;
     }
 
-    public async Task Handle(AddLocationCommand request, CancellationToken cancellationToken)
+    public async Task<Location> Handle(AddLocationCommand request, CancellationToken cancellationToken)
     {
-        await _contextDb.Locations.AddAsync(request.Location);
-        return;
+        await _contextDb.Locations.AddAsync(request.Location, cancellationToken);
+        return request.Location;
     }
 }

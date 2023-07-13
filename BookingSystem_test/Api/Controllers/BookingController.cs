@@ -34,9 +34,8 @@ public class BookingController : ControllerBase
     {
         Booking Booking = new();
         JsonConvert.PopulateObject(body, Booking);
-        await _mediator.Send(new AddBookingCommand(Booking));
 
-        return Ok();
+        return Ok(await _mediator.Send(new AddBookingCommand(Booking)));
     }
 
     [HttpPut("{id}")]

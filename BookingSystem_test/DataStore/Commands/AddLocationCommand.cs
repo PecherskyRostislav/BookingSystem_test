@@ -3,4 +3,4 @@ using MediatR;
 
 namespace API.DataStore.Commands;
 
-public record AddLocationCommand(Location Location) : IRequest;
+public record AddLocationCommand(Location Location) : IRequest<Location>;

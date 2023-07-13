@@ -3,4 +3,4 @@ using MediatR;
 
 namespace API.DataStore.Commands;
 
-public record AddBookingCommand(Booking Booking) : IRequest;
+public record AddBookingCommand(Booking Booking) : IRequest<Booking>;

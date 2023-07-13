@@ -1,9 +1,10 @@
 ﻿using API.DataStore.Commands;
+using API.DataStore.Models;
 using MediatR;
 
 namespace API.DataStore.Handler;
 
-public class AddBookingHandler : IRequestHandler<AddBookingCommand>
+public class AddBookingHandler : IRequestHandler<AddBookingCommand, Booking>
 {
     private readonly ContextDb _contextDb;
 
@@ -12,9 +13,10 @@ public class AddBookingHandler : IRequestHandler<AddBookingCommand>
         _contextDb = context;
     }
 
-    public async Task Handle(AddBookingCommand request, CancellationToken cancellationToken)
+    public async Task<Booking> Handle(AddBookingCommand request, CancellationToken cancellationToken) 
     {
-        await _contextDb.Bookings.AddAsync(request.Booking);
-        return;
+        await _contextDb.Bookings.AddAsync(request.Booking, cancellationToken);
+
+        return request.Booking;
     }
 }

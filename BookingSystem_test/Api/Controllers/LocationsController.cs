@@ -35,9 +35,8 @@ public class LocationsController : ControllerBase
     {
         Location location = new();
         JsonConvert.PopulateObject(body, location);
-        await _mediator.Send(new AddLocationCommand(location));
 
-        return Ok();
+        return Ok(await _mediator.Send(new AddLocationCommand(location)));
     }
 
     [HttpPut("{id}")]
