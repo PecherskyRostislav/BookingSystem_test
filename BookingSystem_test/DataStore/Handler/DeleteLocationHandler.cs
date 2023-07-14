@@ -1,8 +1,9 @@
 ﻿using API.DataStore.Commands;
+using API.Exceptions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.DataStore.Handler;
-
 
 public class DeleteLocationHandler : IRequestHandler<DeleteLocationCommand, bool?>
 {
@@ -14,12 +15,16 @@ public class DeleteLocationHandler : IRequestHandler<DeleteLocationCommand, bool
 
     public async Task<bool?> Handle(DeleteLocationCommand request, CancellationToken cancellationToken)
     {
-        var Location = await _contextDb.Locations.FindAsync(request.id, cancellationToken);
-        if (Location == null) return null;
+        var location = await _contextDb.Locations
+            .FirstOrDefaultAsync(location => location.Id == request.id, cancellationToken);
 
-        var result = _contextDb.Locations.Remove(Location);
+        if (location is null)
+        {
+            throw new LocationNotFoundException(request.id);
+        }
+        var result = _contextDb.Locations.Remove(location);
 
         await _contextDb.SaveChangesAsync();
-        return result.State == Microsoft.EntityFrameworkCore.EntityState.Detached;
+        return result.State == EntityState.Detached;
     }
 }

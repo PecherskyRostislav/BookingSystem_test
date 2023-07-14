@@ -17,6 +17,7 @@ builder.Services.AddDbContext<ContextDb>(options =>
 });
 
 builder.Services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(LoggingBehaivor<,>));
+builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

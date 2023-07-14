@@ -1,6 +1,8 @@
 ﻿using API.DataStore.Commands;
 using API.DataStore.Models;
+using API.Exceptions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.DataStore.Handler;
 
@@ -13,16 +15,22 @@ public class PutLocationHandler : IRequestHandler<PutLocationCommand, Location>
     }
     public async Task<Location> Handle(PutLocationCommand request, CancellationToken cancellationToken)
     {
-        var Location = await _contextDb.Locations.FindAsync(request.id, cancellationToken);
-        if (Location == null) return null;
+        var location = await _contextDb.Locations
+            .FirstOrDefaultAsync(location => location.Id == request.id, cancellationToken);
 
-        Location.Name = request.Location.Name;
-        Location.Address = request.Location.Address;
-        Location.Capacity = request.Location.Capacity;
+        if (location is null)
+        {
+            throw new LocationNotFoundException(request.id);
+        }
 
-        _contextDb.Locations.Update(Location);
+        location.Name = request.Location.Name;
+        location.Address = request.Location.Address;
+        location.Capacity = request.Location.Capacity;
+
+        _contextDb.Locations.Update(location);
         await _contextDb.SaveChangesAsync();
 
-        return Location;
+        return location;
+
     }
 }

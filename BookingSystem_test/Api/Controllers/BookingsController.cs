@@ -17,50 +17,38 @@ public class BookingsController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(List<Booking>), StatusCodes.Status200OK)]
     public async Task<ActionResult> Get()
     {
         return Ok(await _mediator.Send(new GetBookingsQuery()));
     }
 
     [HttpGet("{id}")]
+    [ProducesResponseType(typeof(Booking), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> Get(Guid id)
     {
-        var item = await _mediator.Send(new GeBookingByIdQuery(id));
-        if (item == null) 
-        {
-            return NotFound(id);
-        }
-
-        return Ok(item);
+        return Ok(await _mediator.Send(new GeBookingByIdQuery(id)));
     }
 
     [HttpPost]
+    [ProducesResponseType(typeof(Location), StatusCodes.Status201Created)]
     public async Task<ActionResult> Post([FromBody] Booking body)
     {
-        return Ok(await _mediator.Send(new AddBookingCommand(body)));
+        var booking = await _mediator.Send(new AddBookingCommand(body));
+
+        return CreatedAtAction(nameof(Post), new { id = booking.Id }, booking);
     }
 
     [HttpPut("{id}")]
     public async Task<ActionResult> Put(Guid id, [FromBody] Booking body)
     {
-        var item = await _mediator.Send(new PutBookingCommand(id, body));
-        if (item == null)
-        {
-            return NotFound(id);
-        }
-
-        return Ok(item);
+        return Ok(await _mediator.Send(new PutBookingCommand(id, body)));
     }
 
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(Guid id)
     {
-        var item = await _mediator.Send(new DeleteBookingCommand(id));
-        if (item == null)
-        {
-            return NotFound(id);
-        }
-
-        return Ok(item);
+        return Ok(await _mediator.Send(new DeleteBookingCommand(id)));
     }
 }

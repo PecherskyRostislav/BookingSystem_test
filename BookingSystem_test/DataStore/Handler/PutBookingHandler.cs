@@ -1,6 +1,8 @@
 ﻿using API.DataStore.Commands;
 using API.DataStore.Models;
+using API.Exceptions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.DataStore.Handler;
 
@@ -13,8 +15,13 @@ public class PutBookingHandler : IRequestHandler<PutBookingCommand, Booking>
     }
     public async Task<Booking> Handle(PutBookingCommand request, CancellationToken cancellationToken)
     {
-        var booking = await _contextDb.Bookings.FindAsync(request.id, cancellationToken);
-        if (booking == null) return null;
+        var booking = await _contextDb.Bookings
+            .FirstOrDefaultAsync(booking => booking.Id == request.id, cancellationToken);
+
+        if (booking is null)
+        {
+            throw new BookingNotFoundException(request.id);
+        }
 
         booking.LocationId = request.Booking.LocationId;
         booking.Date = request.Booking.Date;

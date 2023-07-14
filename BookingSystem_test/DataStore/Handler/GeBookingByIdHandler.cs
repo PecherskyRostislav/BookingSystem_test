@@ -1,5 +1,7 @@
 ﻿using API.DataStore.Models;
+using API.Exceptions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.DataStore.Handler;
 
@@ -11,6 +13,16 @@ public class GeBookingByIdHandler : IRequestHandler<GeBookingByIdQuery, Booking>
         _contextDb = contextDb;
     }
 
-    public async Task<Booking> Handle(GeBookingByIdQuery request, CancellationToken cancellationToken) => 
-        await _contextDb.Bookings.FindAsync(request.id);
+    public async Task<Booking> Handle(GeBookingByIdQuery request, CancellationToken cancellationToken)
+    {
+        var booking = await _contextDb.Bookings
+            .FirstOrDefaultAsync(booking => booking.Id == request.id, cancellationToken);
+
+        if (booking is null)
+        {
+            throw new BookingNotFoundException(request.id);
+        }
+
+        return booking;
+    }
 }
