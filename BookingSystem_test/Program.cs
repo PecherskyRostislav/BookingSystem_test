@@ -1,5 +1,6 @@
 using API.Behaviors;
 using API.DataStore;
+using API.Middleware;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,6 +31,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 
